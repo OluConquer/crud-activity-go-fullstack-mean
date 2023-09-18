@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const Product = require('./models/product');
 
 const app = express();
 
@@ -20,5 +21,25 @@ mongoose.connect('mongodb+srv://oluconquer:kFnpRl3DhSFIUbK5@oluconquer.jyksbsn.m
     console.log('Unable to connect to MongoDB Community Atlas!');
     console.error(error);
 });
+
+// Create a new product in the database
+app.post('/api/products', (req, res, next) => {
+    const product = new Product({
+        name: req.body.name,
+        description: req.body.description,
+        price: req.body.price,
+        inStock: req.body.inStock
+    });
+
+    product.save()
+    .then((product) => {
+        res.status(201).json({product: product});
+    })
+    .catch((error) => {
+        res.status(400).json({error: error});
+    });
+});
+
+
 
 module.exports = app;
