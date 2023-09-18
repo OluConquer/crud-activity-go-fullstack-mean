@@ -40,6 +40,27 @@ app.post('/api/products', (req, res, next) => {
     });
 });
 
+
+// Update the product with the provided  _id  with the data provided in the request body.
+app.put('/api/products/:id', (req, res, next) => {
+    const product = new Product({
+        _id: req.params.id,
+        name: req.body.name,
+        description: req.body.description,
+        price: req.body.price,
+        inStock: req.body.inStock
+    });
+
+    Product.updateOne({_id: req.params.id}, product)
+    .then(() => {
+        res.status(201).json({message: 'Modified'});
+    })
+    .catch((error) => {
+        res.status(400).json({error: error});
+    });
+});
+
+
 // Return the single product with the provided _id
 app.get('/api/products/:id', (req, res, next) => {
     Product.findOne({_id: req.params.id})
