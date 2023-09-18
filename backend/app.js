@@ -53,13 +53,24 @@ app.put('/api/products/:id', (req, res, next) => {
 
     Product.updateOne({_id: req.params.id}, product)
     .then(() => {
-        res.status(201).json({message: 'Modified'});
+        res.status(201).json({message: 'Modified!'});
     })
     .catch((error) => {
         res.status(400).json({error: error});
     });
 });
 
+
+// Delete the single product with the provided _id
+app.delete('/api/products/:id', (req, res, next) => {
+    Product.deleteOne({_id: req.params.id})
+    .then(() => {
+        res.status(201).json({message: 'Deleted!'});
+    })
+    .catch((error) => {
+        res.status(404).json({error: error});
+    });
+});
 
 // Return the single product with the provided _id
 app.get('/api/products/:id', (req, res, next) => {
