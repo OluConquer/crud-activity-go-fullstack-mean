@@ -40,15 +40,19 @@ app.post('/api/products', (req, res, next) => {
     });
 });
 
+// Return the single product with the provided _id
+app.get('/api/products/:id', (req, res, next) => {
+    Product.findOne({_id: req.params.id})
+    .then((product) => {
+        res.status(200).json({product: product});
+    })
+    .catch((error) => {
+        res.status(404).json({error: error});
+    });
+});
+
 // Return all products in the database
 app.get('/api/products', (req, res, next) => {
-    // const product = new Product({
-    //     name: req.body.name,
-    //     description: req.body.description,
-    //     price: req.body.price,
-    //     inStock: req.body.inStock
-    // });
-
     Product.find()
     .then((products) => {
         res.status(200).json({products: products});
@@ -57,7 +61,5 @@ app.get('/api/products', (req, res, next) => {
         res.status(400).json({error: error});
     });
 });
-
-
 
 module.exports = app;
